@@ -10,392 +10,355 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? dropValue;
-  double sValue = 3500;
-
+  String? selectedItem;
+  double sliderValue = 2000;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text(
-          "Homepage",
+          'Home Page',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 28,
           ),
         ),
-        centerTitle: true,
         actions: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10.0),
             child: GestureDetector(
               onTap: () {
                 setState(() {
-                  Navigator.of(context).pushNamed("Cartpage");
+                  Navigator.of(context).pushNamed('Cartpage');
                 });
               },
-              child: Icon(Icons.shopping_cart),
+              child: Icon(
+                Icons.shopping_cart,
+                size: 30,
+              ),
             ),
-          )
+          ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+      body: Column(
+        children: [
+          Expanded(
+            child: Row(
               children: [
-                DropdownButton(
-                  padding: const EdgeInsets.all(10),
-                  value: dropValue,
-                  hint: const Text(
-                    "Select Category...",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  items: ProductData.allproductData.map((e) {
-                    return DropdownMenuItem(
-                      value: e['catagoryName'],
-                      child: Text(
-                        e['catagoryName'],
+                Container(
+                  padding: EdgeInsets.all(20),
+                  alignment: Alignment.centerLeft,
+                  child: DropdownButton(
+                    hint: const Text(
+                      'Select Catagory',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
                       ),
-                    );
-                  }).toList(),
-                  onChanged: (values) {
-                    setState(() {
-                      dropValue = values as String;
-                    });
-                  },
+                    ),
+                    value: selectedItem,
+                    items: ProductData.allproductData.map((e) {
+                      return DropdownMenuItem(
+                        value: e['catagoryName'],
+                        child: Text(e['catagoryName']),
+                      );
+                    }).toList(),
+                    onChanged: (val) {
+                      setState(() {
+                        selectedItem = val as String;
+                      });
+                    },
+                  ),
                 ),
-                const SizedBox(width: 10),
-                (dropValue != null)
+                (selectedItem != null)
                     ? ActionChip(
+                        label: Text("Clear"),
+                        avatar: Icon(Icons.close),
                         onPressed: () {
                           setState(() {
-                            dropValue = null;
-                            sValue = 3500;
+                            sliderValue = 2000;
+                            selectedItem = null;
                           });
                         },
-                        avatar: const Icon(Icons.close),
-                        label: const Text('Clear'))
+                      )
                     : Container(),
               ],
             ),
-            (dropValue != null)
-                ? Container(
-                    padding: const EdgeInsets.all(10),
-                    height: 80,
-                    width: double.infinity,
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Column(
-                          children: [
-                            Text(
-                              "From",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              "\$ 0",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )
-                          ],
-                        ),
-                        Expanded(
-                          child: Slider(
-                            min: 0,
-                            max: 3500,
-                            value: sValue,
-                            onChanged: (val) {
-                              setState(() {
-                                sValue = val;
-                              });
-                            },
-                          ),
-                        ),
-                        const Column(
-                          children: [
-                            Text(
-                              "To",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              "\$ 3550",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                : Container(),
-            ...ProductData.allproductData.map(
-              (e) => ((dropValue == e['categoryName']) || dropValue == null)
-                  ? Container(
-                      // color: Colors.amber,
-                      alignment: Alignment.topLeft,
-                      child: Column(
+          ),
+          (selectedItem != null)
+              ? Container(
+                  height: 60,
+                  child: Row(
+                    children: [
+                      const Column(
                         children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            padding: const EdgeInsets.all(15),
-                            // color: Colors.white,
-                            child: Text(
-                              "${e['catagoryName']}",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 27,
-                              ),
+                          Text(
+                            'From',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
                             ),
                           ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.only(left: 15, right: 15),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  ...e['categoryProducts'].map(
-                                    (index) =>
-                                        (index['price'] <= sValue &&
-                                                sValue >= index['price'])
-                                            ? Container(
-                                                padding: const EdgeInsets.only(
-                                                  right: 22,
-                                                  top: 3,
-                                                  bottom: 10,
-                                                ),
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      Navigator.of(context)
-                                                          .pushNamed(
-                                                              "Detailpage",
-                                                              arguments: index
-                                                                  as Map<String,
-                                                                      dynamic>);
-                                                    });
-                                                  },
-                                                  child: SizedBox(
-                                                    height: 350,
-                                                    child: Column(
-                                                      children: [
-                                                        Expanded(
-                                                          child: Container(
-                                                            width: 220,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: Colors.grey
-                                                                  .shade200,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                20,
-                                                              ),
-                                                              boxShadow: [
-                                                                BoxShadow(
-                                                                  blurRadius: 5,
-                                                                  spreadRadius:
-                                                                      1,
-                                                                  offset:
-                                                                      const Offset(
-                                                                          0, 5),
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .withOpacity(
-                                                                          0.8),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Expanded(
-                                                                  flex: 8,
-                                                                  child:
-                                                                      Container(
-                                                                    width: double
-                                                                        .infinity,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      image:
-                                                                          DecorationImage(
-                                                                        image:
-                                                                            NetworkImage(
-                                                                          index[
-                                                                              'thumbnail'],
-                                                                        ),
-                                                                        fit: BoxFit
-                                                                            .cover,
-                                                                      ),
-                                                                    ),
-                                                                    child:
-                                                                        Column(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        Container(
-                                                                          alignment:
-                                                                              Alignment.center,
-                                                                          height:
-                                                                              40,
-                                                                          width:
-                                                                              80,
-                                                                          decoration:
-                                                                              const BoxDecoration(
-                                                                            color:
-                                                                                Colors.red,
-                                                                            borderRadius:
-                                                                                BorderRadius.only(
-                                                                              bottomRight: Radius.circular(15),
-                                                                              topLeft: Radius.circular(20),
-                                                                            ),
-                                                                          ),
-                                                                          child:
-                                                                              Text(
-                                                                            "${index['discountPrecentage']} %",
-                                                                            style:
-                                                                                const TextStyle(
-                                                                              fontSize: 22,
-                                                                              fontWeight: FontWeight.bold,
-                                                                              color: Colors.white,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                Expanded(
-                                                                  flex: 4,
-                                                                  child:
-                                                                      Container(
-                                                                    height: 120,
-                                                                    width: 220,
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(
-                                                                            10),
-                                                                    decoration:
-                                                                        const BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius
-                                                                              .only(
-                                                                        bottomRight:
-                                                                            Radius.circular(20),
-                                                                        bottomLeft:
-                                                                            Radius.circular(20),
-                                                                      ),
-                                                                    ),
-                                                                    child:
-                                                                        Column(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      children: [
-                                                                        Text(
-                                                                          "${index['title']}",
-                                                                          style:
-                                                                              const TextStyle(
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            fontSize:
-                                                                                17,
-                                                                          ),
-                                                                        ),
-                                                                        Text(
-                                                                          "\$ ${index['price']}",
-                                                                          style:
-                                                                              const TextStyle(
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            fontSize:
-                                                                                18,
-                                                                          ),
-                                                                        ),
-                                                                        RatingBar
-                                                                            .builder(
-                                                                          initialRating:
-                                                                              index['rating'],
-                                                                          minRating:
-                                                                              1,
-                                                                          itemSize:
-                                                                              20,
-                                                                          direction:
-                                                                              Axis.horizontal,
-                                                                          allowHalfRating:
-                                                                              true,
-                                                                          itemCount:
-                                                                              5,
-                                                                          ignoreGestures:
-                                                                              true,
-                                                                          itemPadding: const EdgeInsets
-                                                                              .symmetric(
-                                                                              horizontal: 4.0),
-                                                                          itemBuilder: (context, _) =>
-                                                                              const Icon(
-                                                                            Icons.star,
-                                                                            color:
-                                                                                Colors.amber,
-                                                                          ),
-                                                                          onRatingUpdate:
-                                                                              (rating) {
-                                                                            print(rating);
-                                                                          },
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
-                                            : Container(),
-                                  ),
-                                ],
-                              ),
+                          Text(
+                            '\$ 0',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
                             ),
                           ),
                         ],
                       ),
-                    )
-                  : Container(),
+                      Expanded(
+                        child: Slider(
+                          min: 0,
+                          max: 2000,
+                          value: sliderValue as double,
+                          onChanged: (val) {
+                            setState(() {
+                              sliderValue = val as double;
+                            });
+                          },
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            'To',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          Text(
+                            '\$ ${sliderValue.toInt()}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              : Container(),
+          Expanded(
+            flex: 10,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ...ProductData.allproductData.map(
+                    (e) =>
+                        ((selectedItem == e['catagoryName']) ||
+                                selectedItem == null)
+                            ? SizedBox(
+                                height: 400,
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Container(
+                                        padding: const EdgeInsets.only(
+                                          left: 15,
+                                          top: 20,
+                                        ),
+                                        // color: Colors.green,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          '${e['catagoryName']}',
+                                          style: const TextStyle(
+                                            fontSize: 28,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 12,
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                          children: [
+                                            ...e['categoryProducts'].map(
+                                              (index) =>
+                                                  (index['price'] <=
+                                                              sliderValue &&
+                                                          sliderValue >=
+                                                              index['price'])
+                                                      ? Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(
+                                                                      10.0),
+                                                              child: SizedBox(
+                                                                height: 320,
+                                                                width: 195,
+                                                                child: Column(
+                                                                  children: [
+                                                                    Expanded(
+                                                                      flex: 9,
+                                                                      child:
+                                                                          GestureDetector(
+                                                                        onTap: () => Navigator.of(context).pushNamed(
+                                                                            'Detailpage',
+                                                                            arguments:
+                                                                                index),
+                                                                        child:
+                                                                            Container(
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                Colors.grey,
+                                                                            image:
+                                                                                DecorationImage(
+                                                                              image: NetworkImage(
+                                                                                index['thumbnail'],
+                                                                              ),
+                                                                              fit: BoxFit.cover,
+                                                                            ),
+                                                                            borderRadius:
+                                                                                const BorderRadius.vertical(
+                                                                              top: Radius.circular(30),
+                                                                            ),
+                                                                          ),
+                                                                          alignment:
+                                                                              Alignment.topLeft,
+                                                                          child:
+                                                                              Container(
+                                                                            height:
+                                                                                50,
+                                                                            width:
+                                                                                80,
+                                                                            decoration:
+                                                                                const BoxDecoration(
+                                                                              color: Colors.red,
+                                                                              borderRadius: BorderRadius.only(
+                                                                                topLeft: Radius.circular(20),
+                                                                                bottomRight: Radius.circular(10),
+                                                                              ),
+                                                                            ),
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            child:
+                                                                                Text(
+                                                                              '${index['discountPrecentage']} %',
+                                                                              style: const TextStyle(
+                                                                                fontSize: 20,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    Expanded(
+                                                                      flex: 5,
+                                                                      child:
+                                                                          Container(
+                                                                        padding:
+                                                                            const EdgeInsets.only(
+                                                                          left:
+                                                                              10,
+                                                                          top:
+                                                                              5,
+                                                                          // bottom: 5,
+                                                                        ),
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          boxShadow: [
+                                                                            BoxShadow(
+                                                                              color: Colors.grey,
+                                                                              spreadRadius: 1,
+                                                                              blurRadius: 10,
+                                                                            )
+                                                                          ],
+                                                                          color: Colors
+                                                                              .grey
+                                                                              .shade200,
+                                                                          borderRadius:
+                                                                              const BorderRadius.vertical(
+                                                                            bottom:
+                                                                                Radius.circular(30),
+                                                                          ),
+                                                                        ),
+                                                                        alignment:
+                                                                            Alignment.topLeft,
+                                                                        child:
+                                                                            Padding(
+                                                                          padding: const EdgeInsets
+                                                                              .all(
+                                                                              8.0),
+                                                                          child:
+                                                                              Column(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceEvenly,
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              Text(
+                                                                                '${index['title']}',
+                                                                                style: const TextStyle(
+                                                                                  fontSize: 16,
+                                                                                  fontWeight: FontWeight.bold,
+                                                                                ),
+                                                                              ),
+                                                                              Text(
+                                                                                '\$ ${index['price']}',
+                                                                                style: const TextStyle(
+                                                                                  fontSize: 14,
+                                                                                  fontWeight: FontWeight.w900,
+                                                                                ),
+                                                                              ),
+                                                                              RatingBar.builder(
+                                                                                ignoreGestures: true,
+                                                                                itemSize: 18,
+                                                                                initialRating: index['rating'],
+                                                                                minRating: 1,
+                                                                                direction: Axis.horizontal,
+                                                                                allowHalfRating: true,
+                                                                                itemCount: 5,
+                                                                                // itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                                                                itemBuilder: (context, _) => Icon(
+                                                                                  Icons.star,
+                                                                                  color: Colors.amber,
+                                                                                ),
+                                                                                onRatingUpdate: (rating) {
+                                                                                  print(rating);
+                                                                                },
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        )
+                                                      : Container(),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : Container(),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

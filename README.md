@@ -1,16 +1,43 @@
-# core_flutter_first_day
+#  Core_flutter_first_day
 
-A new Flutter project.
+## Getting Started.
 
-## Getting Started
+## . *Product Details*
 
-This project is a starting point for a Flutter application.
+### 1.  *Catagory Details*
 
-A few resources to get you started if this is your first Flutter project:
+1. *Smart Phone*
+2. *Laptops*
+3. *Earbuds*
+4. *Smart Watchs*
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 2. *Page Details*
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. *Homepage*
+2. *Detailpage*
+3. *Cartpage*
+
+### . *Homepage*
+
+    . Products is menu typs in your choice and selecte the product and Store the in your Cart.
+
+    . your all selected Product view in tap to the cart shopping icons.
+
+    . tap to Any product and so the for  all detail in paricular product.
+
+## 2. *Detailpage*
+
+    . Detailpage view for product details.
+    . View Product Price.
+    . View Product Description.
+    . View Product Catagory.
+    . View Product rating.
+    . tap to the shopping icon in purchase the your selected product.
+
+
+## 3. *Cartpage*
+
+    . view your all Selected Product.
+    . view the product Bill.
+
+

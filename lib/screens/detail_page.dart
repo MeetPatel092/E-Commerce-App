@@ -1,5 +1,4 @@
 import 'package:core_flutter_first_day/utills/allProductData.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Detailpage extends StatefulWidget {
@@ -31,23 +30,13 @@ class _DetailpageState extends State<Detailpage> {
         actions: [
           Padding(
               padding: const EdgeInsets.all(10),
-              child: Badge(
-                label: Text(
-                  "1",
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      Navigator.of(context).pushNamed("Cartpage");
-                    });
-                  },
-                  child: Icon(Icons.shopping_cart),
-                ),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    Navigator.of(context).pushNamed("Cartpage");
+                  });
+                },
+                child: Icon(Icons.shopping_cart),
               )),
         ],
       ),
@@ -58,22 +47,25 @@ class _DetailpageState extends State<Detailpage> {
             color: Colors.grey.shade200,
             height: double.infinity,
             width: double.infinity,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: List.generate(
-                  product['images'].length,
-                  (index) => Container(
-                    height: 500,
-                    width: 400,
-                    margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Image.network(
-                      '${product['images'][index]}',
-                      fit: BoxFit.cover,
+            child: Column(
+              children: [
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(
+                      product['images'].length,
+                      (index) => Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Image.network(
+                          '${product['images'][index]}',
+                          fit: BoxFit.cover,
+                          height: 430,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
           Container(
@@ -107,7 +99,7 @@ class _DetailpageState extends State<Detailpage> {
                           "${product['title']}",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 25,
+                            fontSize: 28,
                           ),
                         ),
                       ),
@@ -115,7 +107,7 @@ class _DetailpageState extends State<Detailpage> {
                         "\$ ${product['price']}",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 25,
+                          fontSize: 28,
                           color: Colors.red,
                         ),
                       )

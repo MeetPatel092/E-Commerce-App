@@ -1,5 +1,4 @@
 import 'package:core_flutter_first_day/utills/allProductData.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Cartpage extends StatefulWidget {
@@ -34,6 +33,7 @@ class _CartpageState extends State<Cartpage> {
                 child: Column(
                   children: [
                     ...ProductData.allcartData.map((e) => Container(
+                          padding: EdgeInsets.only(bottom: 15),
                           height: 150,
                           width: double.infinity,
                           decoration: BoxDecoration(
@@ -79,7 +79,7 @@ class _CartpageState extends State<Cartpage> {
                                           "${e["title"]}",
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 23,
+                                            fontSize: 20,
                                           ),
                                         ),
                                         Text(
